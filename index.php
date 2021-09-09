@@ -39,7 +39,7 @@
                 foreach($posts as $post){    //veritabanından gelen tüm postları listele
                     echo '<div class="card mt-5">
                             <div class="card-header">
-                                <h4>What is Lorem Ipsum?'.$post["header"].'</h4>
+                                <h4>'.$post["header"].'</h4>
                             </div>
                             <div class="card-body">
                                 <p class="card-text text-truncate">'.$post["content"].'</p>
