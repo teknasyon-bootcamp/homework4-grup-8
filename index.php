@@ -10,50 +10,36 @@
 <body>
     <div class="container">
         <?php
-        $posts = [
-            [
-                'id' => 1,
-                'header' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which ',
-                'content' => 'Some quick example text to build on the card title and make up the bulk of the card content.There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which '
-            ],            [
-                'id' => 3,
-                'header' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which ',
-                'content' => 'Some quick example text to build on the card title and make up the bulk of the card content.There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which '
-            ],            [
-                'id' => 5,
-                'header' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which ',
-                'content' => 'Some quick example text to build on the card title and make up the bulk of the card content.There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which '
-            ],            [
-                'id' => 7,
-                'header' => 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which ',
-                'content' => 'Some quick example text to build on the card title and make up the bulk of the card content.There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which '
-            ],
-        ];
-            if(isset($_GET["post"])){
-                $post_id = $_GET["post"];
-                if($post_id == $posts[0]["id"]){
-                    $post = $posts[0];
+
+        require 'post.class.php';   //Gerekli Sınıf Dahil Et
+
+        $db =  Post::createPostObj();   //Öncelikle Db objesi oluşturulur
+        $posts = $db->PostList();   //Post Listesi Getirilir
+            if(isset($_GET["post"])){   //Eğer get ile bir değişken geldiyse
+                $post_id = $_GET["post"];   //bu değeri değişkene ata
+                if($db->PostInfo($post_id)){    //eğer veritabanında bu idye sahip post varsa getir
+                    $post = $db->PostInfo($post_id);    //GElen postu değişkene ata ve ekrana bas
                 echo '  <div class="card border-dark mt-5">
-                            <div class="card-header"><h5>'.$post["header"].' '.$post_id.'</h5></div>
+                            <div class="card-header"><h5>'.$post["header"].'</h5></div> 
                             <div class="card-body text-dark">
                                 <p class="card-text">'.$post["content"].'</p>
                             </div>
                         </div>';
                 echo '<div class="d-flex justify-content-end mt-3"><a href="index.php" class="btn btn-danger">Anasayfa</a></div>';
                 }
-                else{
+                else{   //Post yoksa böyle bir post bulunamadı sayfasına gönder
                     echo '<div class="text-center"><h3 class="mt-5">Böyle bir post bulunamadı.</h3></br>
                             <a href="index.php" class="btn btn-danger">Anasayfaya Dön</a>
                          </div>';
                 }
-            }else{
+            }else{  //post işlemi yoksa
                 echo '<div class="text-center mt-5">
                         <h1>Post Listesi</h1>
                     </div>';
-                foreach($posts as $post){    
+                foreach($posts as $post){    //veritabanından gelen tüm postları listele
                     echo '<div class="card mt-5">
                             <div class="card-header">
-                                <h4>What is Lorem Ipsum?'.$post["header"].' '.$post["id"].'</h4>
+                                <h4>What is Lorem Ipsum?'.$post["header"].'</h4>
                             </div>
                             <div class="card-body">
                                 <p class="card-text text-truncate">'.$post["content"].'</p>
